@@ -10,12 +10,12 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [ApiVersion("1.1")]
 [Authorize(Roles = "Empleado, Administrador, Gerente")]
-public class UsuarioController : BaseApiController
+public class PrendaController : BaseApiController
 {
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public UsuarioController(IMapper mapper, IUnitOfWork unitOfWork)
+    public PrendaController(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -30,39 +30,39 @@ public class UsuarioController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<UsuarioDto>>> Get()
+    public async Task<ActionResult<IEnumerable<PrendaDto>>> Get()
     {
-        var usuarios = await _unitOfWork.Usuarios.GetAllAsync();
-        return this._mapper.Map<List<UsuarioDto>>(usuarios);
+        var prendas = await _unitOfWork.Prendas.GetAllAsync();
+        return this._mapper.Map<List<PrendaDto>>(prendas);
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UsuarioDto>> Get(int id)
+    public async Task<ActionResult<PrendaDto>> Get(int id)
     {
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if (usuario == null){
+        var prenda = await _unitOfWork.Prendas.GetByIdAsync(id);
+        if (prenda == null){
             return NotFound();
         }
-        return this._mapper.Map<UsuarioDto>(usuario);
+        return this._mapper.Map<PrendaDto>(prenda);
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Usuario>> Post(UsuarioDto usuarioDto)
+    public async Task<ActionResult<Prenda>> Post(PrendaDto prendaDto)
     {
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        this._unitOfWork.Usuarios.Add(usuario);
+        var prenda = this._mapper.Map<Prenda>(prendaDto);
+        this._unitOfWork.Prendas.Add(prenda);
         await _unitOfWork.SaveAsync();
-        if(usuario == null)
+        if(prenda == null)
         {
             return BadRequest();
         }
-        usuarioDto.Id = usuario.Id;
-        return CreatedAtAction(nameof(Post), new {id = usuarioDto.Id}, usuarioDto);
+        prendaDto.Id = prenda.Id;
+        return CreatedAtAction(nameof(Post), new {id = prendaDto.Id}, prendaDto);
     }
 
     [HttpPut("{id}")]
@@ -70,30 +70,34 @@ public class UsuarioController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<UsuarioDto>> Put(int id, [FromBody]UsuarioDto usuarioDto){
-        if(usuarioDto == null)
+    public async Task<ActionResult<PrendaDto>> Put(int id, [FromBody]PrendaDto prendaDto){
+        if(prendaDto == null)
         {
             return NotFound();
         }
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        _unitOfWork.Usuarios.Update(usuario);
+        var prenda = this._mapper.Map<Prenda>(prendaDto);
+        _unitOfWork.Prendas.Update(prenda);
         await _unitOfWork.SaveAsync();
-        return usuarioDto;
+        return prendaDto;
     }
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id){
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if(usuario == null)
+        var prenda = await _unitOfWork.Prendas.GetByIdAsync(id);
+        if(prenda == null)
         {
             return NotFound();
         }
-        _unitOfWork.Usuarios.Remove(usuario);
+        _unitOfWork.Prendas.Remove(prenda);
         await _unitOfWork.SaveAsync();
         return NoContent();
     }
+
+
+    // Consultas
+
 
 
     

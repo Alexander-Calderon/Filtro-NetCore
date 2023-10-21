@@ -10,12 +10,12 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [ApiVersion("1.1")]
 [Authorize(Roles = "Empleado, Administrador, Gerente")]
-public class UsuarioController : BaseApiController
+public class CargoController : BaseApiController
 {
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public UsuarioController(IMapper mapper, IUnitOfWork unitOfWork)
+    public CargoController(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -30,39 +30,39 @@ public class UsuarioController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<UsuarioDto>>> Get()
+    public async Task<ActionResult<IEnumerable<CargoDto>>> Get()
     {
-        var usuarios = await _unitOfWork.Usuarios.GetAllAsync();
-        return this._mapper.Map<List<UsuarioDto>>(usuarios);
+        var cargos = await _unitOfWork.Cargos.GetAllAsync();
+        return this._mapper.Map<List<CargoDto>>(cargos);
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UsuarioDto>> Get(int id)
+    public async Task<ActionResult<CargoDto>> Get(int id)
     {
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if (usuario == null){
+        var cargo = await _unitOfWork.Cargos.GetByIdAsync(id);
+        if (cargo == null){
             return NotFound();
         }
-        return this._mapper.Map<UsuarioDto>(usuario);
+        return this._mapper.Map<CargoDto>(cargo);
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Usuario>> Post(UsuarioDto usuarioDto)
+    public async Task<ActionResult<Cargo>> Post(CargoDto cargoDto)
     {
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        this._unitOfWork.Usuarios.Add(usuario);
+        var cargo = this._mapper.Map<Cargo>(cargoDto);
+        this._unitOfWork.Cargos.Add(cargo);
         await _unitOfWork.SaveAsync();
-        if(usuario == null)
+        if(cargo == null)
         {
             return BadRequest();
         }
-        usuarioDto.Id = usuario.Id;
-        return CreatedAtAction(nameof(Post), new {id = usuarioDto.Id}, usuarioDto);
+        cargoDto.Id = cargo.Id;
+        return CreatedAtAction(nameof(Post), new {id = cargoDto.Id}, cargoDto);
     }
 
     [HttpPut("{id}")]
@@ -70,27 +70,27 @@ public class UsuarioController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<UsuarioDto>> Put(int id, [FromBody]UsuarioDto usuarioDto){
-        if(usuarioDto == null)
+    public async Task<ActionResult<CargoDto>> Put(int id, [FromBody]CargoDto cargoDto){
+        if(cargoDto == null)
         {
             return NotFound();
         }
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        _unitOfWork.Usuarios.Update(usuario);
+        var cargo = this._mapper.Map<Cargo>(cargoDto);
+        _unitOfWork.Cargos.Update(cargo);
         await _unitOfWork.SaveAsync();
-        return usuarioDto;
+        return cargoDto;
     }
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id){
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if(usuario == null)
+        var cargo = await _unitOfWork.Cargos.GetByIdAsync(id);
+        if(cargo == null)
         {
             return NotFound();
         }
-        _unitOfWork.Usuarios.Remove(usuario);
+        _unitOfWork.Cargos.Remove(cargo);
         await _unitOfWork.SaveAsync();
         return NoContent();
     }

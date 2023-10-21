@@ -10,12 +10,12 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [ApiVersion("1.1")]
 [Authorize(Roles = "Empleado, Administrador, Gerente")]
-public class UsuarioController : BaseApiController
+public class InventarioTallaController : BaseApiController
 {
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public UsuarioController(IMapper mapper, IUnitOfWork unitOfWork)
+    public InventarioTallaController(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -30,39 +30,39 @@ public class UsuarioController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<UsuarioDto>>> Get()
+    public async Task<ActionResult<IEnumerable<InventarioTallaDto>>> Get()
     {
-        var usuarios = await _unitOfWork.Usuarios.GetAllAsync();
-        return this._mapper.Map<List<UsuarioDto>>(usuarios);
+        var inventariotallas = await _unitOfWork.InventariosTallas.GetAllAsync();
+        return this._mapper.Map<List<InventarioTallaDto>>(inventariotallas);
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UsuarioDto>> Get(int id)
+    public async Task<ActionResult<InventarioTallaDto>> Get(int id)
     {
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if (usuario == null){
+        var inventariotalla = await _unitOfWork.InventariosTallas.GetByIdAsync(id);
+        if (inventariotalla == null){
             return NotFound();
         }
-        return this._mapper.Map<UsuarioDto>(usuario);
+        return this._mapper.Map<InventarioTallaDto>(inventariotalla);
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Usuario>> Post(UsuarioDto usuarioDto)
+    public async Task<ActionResult<InventarioTalla>> Post(InventarioTallaDto inventariotallaDto)
     {
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        this._unitOfWork.Usuarios.Add(usuario);
+        var inventariotalla = this._mapper.Map<InventarioTalla>(inventariotallaDto);
+        this._unitOfWork.InventariosTallas.Add(inventariotalla);
         await _unitOfWork.SaveAsync();
-        if(usuario == null)
+        if(inventariotalla == null)
         {
             return BadRequest();
         }
-        usuarioDto.Id = usuario.Id;
-        return CreatedAtAction(nameof(Post), new {id = usuarioDto.Id}, usuarioDto);
+        inventariotallaDto.Id = inventariotalla.Id;
+        return CreatedAtAction(nameof(Post), new {id = inventariotallaDto.Id}, inventariotallaDto);
     }
 
     [HttpPut("{id}")]
@@ -70,27 +70,27 @@ public class UsuarioController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<UsuarioDto>> Put(int id, [FromBody]UsuarioDto usuarioDto){
-        if(usuarioDto == null)
+    public async Task<ActionResult<InventarioTallaDto>> Put(int id, [FromBody]InventarioTallaDto inventariotallaDto){
+        if(inventariotallaDto == null)
         {
             return NotFound();
         }
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        _unitOfWork.Usuarios.Update(usuario);
+        var inventariotalla = this._mapper.Map<InventarioTalla>(inventariotallaDto);
+        _unitOfWork.InventariosTallas.Update(inventariotalla);
         await _unitOfWork.SaveAsync();
-        return usuarioDto;
+        return inventariotallaDto;
     }
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id){
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if(usuario == null)
+        var inventariotalla = await _unitOfWork.InventariosTallas.GetByIdAsync(id);
+        if(inventariotalla == null)
         {
             return NotFound();
         }
-        _unitOfWork.Usuarios.Remove(usuario);
+        _unitOfWork.InventariosTallas.Remove(inventariotalla);
         await _unitOfWork.SaveAsync();
         return NoContent();
     }

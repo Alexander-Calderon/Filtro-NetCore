@@ -10,12 +10,12 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [ApiVersion("1.1")]
 [Authorize(Roles = "Empleado, Administrador, Gerente")]
-public class UsuarioController : BaseApiController
+public class DetalleVentaController : BaseApiController
 {
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public UsuarioController(IMapper mapper, IUnitOfWork unitOfWork)
+    public DetalleVentaController(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -30,39 +30,39 @@ public class UsuarioController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<UsuarioDto>>> Get()
+    public async Task<ActionResult<IEnumerable<DetalleVentaDto>>> Get()
     {
-        var usuarios = await _unitOfWork.Usuarios.GetAllAsync();
-        return this._mapper.Map<List<UsuarioDto>>(usuarios);
+        var detalleventas = await _unitOfWork.DetallesVentas.GetAllAsync();
+        return this._mapper.Map<List<DetalleVentaDto>>(detalleventas);
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UsuarioDto>> Get(int id)
+    public async Task<ActionResult<DetalleVentaDto>> Get(int id)
     {
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if (usuario == null){
+        var detalleventa = await _unitOfWork.DetallesVentas.GetByIdAsync(id);
+        if (detalleventa == null){
             return NotFound();
         }
-        return this._mapper.Map<UsuarioDto>(usuario);
+        return this._mapper.Map<DetalleVentaDto>(detalleventa);
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Usuario>> Post(UsuarioDto usuarioDto)
+    public async Task<ActionResult<DetalleVenta>> Post(DetalleVentaDto detalleventaDto)
     {
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        this._unitOfWork.Usuarios.Add(usuario);
+        var detalleventa = this._mapper.Map<DetalleVenta>(detalleventaDto);
+        this._unitOfWork.DetallesVentas.Add(detalleventa);
         await _unitOfWork.SaveAsync();
-        if(usuario == null)
+        if(detalleventa == null)
         {
             return BadRequest();
         }
-        usuarioDto.Id = usuario.Id;
-        return CreatedAtAction(nameof(Post), new {id = usuarioDto.Id}, usuarioDto);
+        detalleventaDto.Id = detalleventa.Id;
+        return CreatedAtAction(nameof(Post), new {id = detalleventaDto.Id}, detalleventaDto);
     }
 
     [HttpPut("{id}")]
@@ -70,27 +70,27 @@ public class UsuarioController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<UsuarioDto>> Put(int id, [FromBody]UsuarioDto usuarioDto){
-        if(usuarioDto == null)
+    public async Task<ActionResult<DetalleVentaDto>> Put(int id, [FromBody]DetalleVentaDto detalleventaDto){
+        if(detalleventaDto == null)
         {
             return NotFound();
         }
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        _unitOfWork.Usuarios.Update(usuario);
+        var detalleventa = this._mapper.Map<DetalleVenta>(detalleventaDto);
+        _unitOfWork.DetallesVentas.Update(detalleventa);
         await _unitOfWork.SaveAsync();
-        return usuarioDto;
+        return detalleventaDto;
     }
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id){
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if(usuario == null)
+        var detalleventa = await _unitOfWork.DetallesVentas.GetByIdAsync(id);
+        if(detalleventa == null)
         {
             return NotFound();
         }
-        _unitOfWork.Usuarios.Remove(usuario);
+        _unitOfWork.DetallesVentas.Remove(detalleventa);
         await _unitOfWork.SaveAsync();
         return NoContent();
     }

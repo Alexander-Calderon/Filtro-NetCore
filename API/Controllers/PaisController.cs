@@ -10,12 +10,12 @@ namespace API.Controllers;
 [ApiVersion("1.0")]
 [ApiVersion("1.1")]
 [Authorize(Roles = "Empleado, Administrador, Gerente")]
-public class UsuarioController : BaseApiController
+public class PaisController : BaseApiController
 {
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public UsuarioController(IMapper mapper, IUnitOfWork unitOfWork)
+    public PaisController(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -30,39 +30,39 @@ public class UsuarioController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<UsuarioDto>>> Get()
+    public async Task<ActionResult<IEnumerable<PaisDto>>> Get()
     {
-        var usuarios = await _unitOfWork.Usuarios.GetAllAsync();
-        return this._mapper.Map<List<UsuarioDto>>(usuarios);
+        var paiss = await _unitOfWork.Paises.GetAllAsync();
+        return this._mapper.Map<List<PaisDto>>(paiss);
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<UsuarioDto>> Get(int id)
+    public async Task<ActionResult<PaisDto>> Get(int id)
     {
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if (usuario == null){
+        var pais = await _unitOfWork.Paises.GetByIdAsync(id);
+        if (pais == null){
             return NotFound();
         }
-        return this._mapper.Map<UsuarioDto>(usuario);
+        return this._mapper.Map<PaisDto>(pais);
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Usuario>> Post(UsuarioDto usuarioDto)
+    public async Task<ActionResult<Pais>> Post(PaisDto paisDto)
     {
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        this._unitOfWork.Usuarios.Add(usuario);
+        var pais = this._mapper.Map<Pais>(paisDto);
+        this._unitOfWork.Paises.Add(pais);
         await _unitOfWork.SaveAsync();
-        if(usuario == null)
+        if(pais == null)
         {
             return BadRequest();
         }
-        usuarioDto.Id = usuario.Id;
-        return CreatedAtAction(nameof(Post), new {id = usuarioDto.Id}, usuarioDto);
+        paisDto.Id = pais.Id;
+        return CreatedAtAction(nameof(Post), new {id = paisDto.Id}, paisDto);
     }
 
     [HttpPut("{id}")]
@@ -70,27 +70,27 @@ public class UsuarioController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<UsuarioDto>> Put(int id, [FromBody]UsuarioDto usuarioDto){
-        if(usuarioDto == null)
+    public async Task<ActionResult<PaisDto>> Put(int id, [FromBody]PaisDto paisDto){
+        if(paisDto == null)
         {
             return NotFound();
         }
-        var usuario = this._mapper.Map<Usuario>(usuarioDto);
-        _unitOfWork.Usuarios.Update(usuario);
+        var pais = this._mapper.Map<Pais>(paisDto);
+        _unitOfWork.Paises.Update(pais);
         await _unitOfWork.SaveAsync();
-        return usuarioDto;
+        return paisDto;
     }
 
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id){
-        var usuario = await _unitOfWork.Usuarios.GetByIdAsync(id);
-        if(usuario == null)
+        var pais = await _unitOfWork.Paises.GetByIdAsync(id);
+        if(pais == null)
         {
             return NotFound();
         }
-        _unitOfWork.Usuarios.Remove(usuario);
+        _unitOfWork.Paises.Remove(pais);
         await _unitOfWork.SaveAsync();
         return NoContent();
     }

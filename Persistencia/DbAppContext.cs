@@ -16,31 +16,31 @@ public class DbAppContext : DbContext
 
 
 
-    public DbSet<Cargo> Cargo { get; set; }
-    public DbSet<Cliente> Cliente { get; set; }
-    public DbSet<Color> Color { get; set; }
-    public DbSet<Departamento> Departamento { get; set; }
-    public DbSet<DetalleOrden> DetalleOrden { get; set; }
-    public DbSet<DetalleVenta> DetalleVenta { get; set; }
-    public DbSet<Empleado> Empleado { get; set; }
-    public DbSet<Empresa> Empresa { get; set; }
-    public DbSet<Estado> Estado { get; set; }
-    public DbSet<FormaPago> FormaPago { get; set; }
-    public DbSet<Genero> Genero { get; set; }
-    public DbSet<Insumo> Insumo { get; set; }
-    public DbSet<InsumoPrenda> InsumoPrenda { get; set; }
-    public DbSet<InsumoProveedor> InsumoProveedor { get; set; }
-    public DbSet<Inventario> Inventario { get; set; }
-    public DbSet<InventarioTalla> InventarioTalla { get; set; }
-    public DbSet<Municipio> Municipio { get; set; }
-    public DbSet<Orden> Orden { get; set; }
-    public DbSet<Pais> Pais { get; set; }
-    public DbSet<Prenda> Prenda { get; set; }
-    public DbSet<Proveedor> Proveedor { get; set; }
-    public DbSet<Talla> Talla { get; set; }
-    public DbSet<TipoEstado> TipoEstado { get; set; }
-    public DbSet<TipoPersona> TipoPersona { get; set; }
-    public DbSet<TipoProteccion> TipoProteccion { get; set; }
+    public DbSet<Cargo> Cargos { get; set; }
+    public DbSet<Cliente> Clientes { get; set; }
+    public DbSet<Color> Colores { get; set; }
+    public DbSet<Departamento> Departamentos { get; set; }
+    public DbSet<DetalleOrden> DetallesOrdenes { get; set; }
+    public DbSet<DetalleVenta> DetallesVentas { get; set; }
+    public DbSet<Empleado> Empleados { get; set; }
+    public DbSet<Empresa> Empresas { get; set; }
+    public DbSet<Estado> Estados { get; set; }
+    public DbSet<FormaPago> FormasPagos { get; set; }
+    public DbSet<Genero> Generos { get; set; }
+    public DbSet<Insumo> Insumos { get; set; }
+    public DbSet<InsumoPrenda> InsumosPrendas { get; set; }
+    public DbSet<InsumoProveedor> InsumosProveedores { get; set; }
+    public DbSet<Inventario> Inventarios { get; set; }
+    public DbSet<InventarioTalla> InventariosTallas { get; set; }
+    public DbSet<Municipio> Municipios { get; set; }
+    public DbSet<Orden> Ordenes { get; set; }
+    public DbSet<Pais> Paises { get; set; }
+    public DbSet<Prenda> Prendas { get; set; }
+    public DbSet<Proveedor> Proveedores { get; set; }
+    public DbSet<Talla> Tallas { get; set; }
+    public DbSet<TipoEstado> TiposEstados { get; set; }
+    public DbSet<TipoPersona> TiposPersonas { get; set; }
+    public DbSet<TipoProteccion> TiposProtecciones { get; set; }
     public DbSet<Venta> Venta { get; set; }
 
 

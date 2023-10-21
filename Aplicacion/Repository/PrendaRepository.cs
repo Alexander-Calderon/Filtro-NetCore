@@ -15,7 +15,8 @@ public class PrendaRepository : GenericRepository<Prenda>, IPrenda
     
     // Implementaciones detalladas (Consultas específicas):
 
-
+    // C1
+    
 
 
 

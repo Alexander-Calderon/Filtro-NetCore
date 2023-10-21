@@ -7,8 +7,7 @@ namespace Persistence.Data.Configuration;
 public class InsumoProveedorConfiguration : IEntityTypeConfiguration<InsumoProveedor> {
     public void Configure(EntityTypeBuilder<InsumoProveedor> builder) {
 
-        builder.ToTable("InsumoProveedor");
-        // .HasKey(insp => new { insp.IdInsumoFk, insp.IdProveedorFk });
+        builder.ToTable("InsumoProveedor");        
 
         builder.HasKey(insp => new { insp.IdInsumoFk, insp.IdProveedorFk });
 

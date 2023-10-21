@@ -18,6 +18,13 @@ public class ProveedorRepository : GenericRepository<Proveedor>, IProveedor
 
 
 
+    // 
+
+    public IEnumerable<Proveedor> GetProveedoresNaturales()
+    {
+        return _context.Proveedores
+            .Where(p => p.IdTipoPersonaFk == 1); 
+    }
 
 
     // Paginación
