@@ -1,0 +1,12 @@
+**vscode/
+**idea/
+**/obj/
+**/bin/
+**/Data/Migrations
+**/recursos
+_old.git/
+_.git/
+logs/
+README.md
+
+
