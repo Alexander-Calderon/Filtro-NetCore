@@ -17,6 +17,7 @@ public class Orden : BaseEntity
 
 
     public ICollection<DetalleOrden> DetallesOrdenes { get; set; }
+    public ICollection<Prenda> Prendas { get; set; }
 
 
 }

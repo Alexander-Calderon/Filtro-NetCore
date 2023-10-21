@@ -15,8 +15,14 @@ public class PrendaRepository : GenericRepository<Prenda>, IPrenda
     
     // Implementaciones detalladas (Consultas específicas):
 
-    // C1
-    
+    // C3
+    public IEnumerable<IGrouping<string, Prenda>> GetPrendasByTipoProteccion()
+    {
+        return _context.Prendas
+        .GroupBy(p => p.TipoProteccion.Descripcion);
+    }
+
+
 
 
 

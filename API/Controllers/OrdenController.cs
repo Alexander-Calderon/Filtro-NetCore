@@ -96,6 +96,17 @@ public class OrdenController : BaseApiController
     }
 
 
+    //
+
+    [HttpGet("PrendasProduccion/{ordenId}")]
+    public IActionResult GetPrendasEnProduccion(int ordenId) 
+    {
+        var prendas = _unitOfWork.Ordenes.GetPrendasEnProduccion(ordenId);
+        return Ok(prendas);
+    }
+
+
+
     
 }
 

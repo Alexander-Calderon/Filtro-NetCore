@@ -97,7 +97,12 @@ public class PrendaController : BaseApiController
 
 
     // Consultas
-
+    [HttpGet("PrendasByTipoProteccion")]
+    public IActionResult GetPrendasByTipoProteccion()
+    {
+        var prendasByTipo = _unitOfWork.Prendas.GetPrendasByTipoProteccion();
+        return Ok(prendasByTipo);
+    }
 
 
     

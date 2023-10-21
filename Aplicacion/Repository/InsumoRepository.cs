@@ -15,6 +15,13 @@ public class InsumoRepository : GenericRepository<Insumo>, IInsumo
     
     // Implementaciones detalladas (Consultas específicas):
 
+    public IEnumerable<Insumo> GetInsumosByProveedor(int proveedorId)
+    {
+        return _context.InsumosProveedores
+            .Where(ip => ip.IdProveedorFk == proveedorId)
+            .Select(ip => ip.Insumo);
+    }
+
 
 
 

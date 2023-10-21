@@ -15,6 +15,13 @@ public class OrdenRepository : GenericRepository<Orden>, IOrden
     
     // Implementaciones detalladas (Consultas específicas):
 
+    public IEnumerable<Prenda> GetPrendasEnProduccion(int ordenProduccionId)
+    {
+        return _context.Ordenes
+        .Where(op => op.Id == ordenProduccionId && op.Estado.Equals("En Producción"))
+
+        .SelectMany(op => op.Prendas);
+    }
 
 
 

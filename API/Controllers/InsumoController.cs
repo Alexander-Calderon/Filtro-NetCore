@@ -95,6 +95,15 @@ public class InsumoController : BaseApiController
         return NoContent();
     }
 
+    //
+
+    [HttpGet("proveedor/{proveedorId}")]
+    public IActionResult GetInsumosByProveedor(int proveedorId)
+    {
+        var insumos = _unitOfWork.Insumos.GetInsumosByProveedor(proveedorId);
+        return Ok(insumos);
+    }
+
 
     
 }
